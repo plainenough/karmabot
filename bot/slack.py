@@ -7,9 +7,7 @@ from . import KARMA_BOT, SLACK_CLIENT, USERNAME_CACHE
 # bot commands
 from commands.add import add_command
 from commands.age import pybites_age
-from commands.ban_user import ban_user
-from commands.unban_user import unban_user
-from commands.unban_all import unban_all
+from commands.ban import ban_user, unban_user, unban_all
 from commands.doc import doc_command
 from commands.help import create_commands_table
 from commands.score import get_karma, top_karma
