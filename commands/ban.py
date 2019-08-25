@@ -11,7 +11,8 @@ def ban_user(**kwargs: dict) -> str:
     with open('BANNED', 'a') as banned_list:
         for new_user in banned_users:
             banned_list.write('{0}\n'.format(new_user))
-    msg_text = 'user(s) {} is/are banned.'.format(banned_users)
+    for user in banned_users:
+        msg_text += '\nUser {0} is banned.'.format(user)
     return msg_text
 
 
@@ -39,7 +40,8 @@ def unban_user(**kwargs: dict) -> str:
             for user in unbanned_users:
                 if line.strip('\n') != user:
                     banned_list.write(line)
-    msg_text = 'user(s) {} is/are no longer banned.'.format(unbanned_users)
+    for user in unbanned_users:
+        msg_text += '\nUser {0} is unbanned.'.format(user)
     return msg_text
 
 
