@@ -1,15 +1,53 @@
-# Building a Karma Bot with Python and the Slack API
+# Rebuilding a Karma Bot with Python and the Slack API
 
-![karma avatar](https://user-images.githubusercontent.com/24620154/56662126-952d7f00-66a3-11e9-99b4-924dc6313b2e.png)
+![Load Commander](https://upload.wikimedia.org/wikipedia/en/f/f4/PinkyandtheBrain.TheBrain.png)
 
-[![BCH compliance](https://bettercodehub.com/edge/badge/pybites/karmabot?branch=master)](https://bettercodehub.com/)
+[![BCH compliance](https://bettercodehub.com/edge/badge/plainenough/karmabot?branch=master)](https://bettercodehub.com/)
 
-Inspiration: [hipchat](https://blog.hipchat.com/2016/05/02/meet-karma-bot/)
+PyBites Article: [Building a Karma Bot with Python and the Slack API](https://pybit.es/slack-karma-bot.html)
 
-PyBites Article: [From Script to Project part 1. - Building a Karma Bot with Python and the Slack API](https://pybit.es/slack-karma-bot.html)
+Original Project: [pybytes/karmabot](https://github.com/pybites/karmabot)
 
-![karma example](https://pybit.es/images/karma_example.png)
+Setup:
+1. Setup user 
+```useradd -d /opt/slackbot/ -r -s /usr/sbin/nologin -U slackbot```
+2. Clone the repo to /opt/slackbot/
+```
+mkdir -p /opt/slackbot/
+git clone https://github.com/plainenough/karmabot.git /opt/slackbot
+chown -R slackbot:slackbot /opt/slackbot/
+```
+3. Create service file - User the above pybit articticle to get a gist on the setup process.
+```
+vim /etc/systemd/system/slackbot.service
+```
+```
+[Unit]
+Description=Karma Bot Service
+After=network.target
+StartLimitIntervalSec=0
 
-__Update 06.09.2018__: karmabot now supports commands, add them to the `commands/` subdirectory, then import it to `bot/slack.py` and add it to `BOT_COMMANDS`. More info: https://www.youtube.com/watch?v=Yx9qYl6lmzM&amp;t=2s
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=slackbot
+Environment=SLACK_KARMA_TOKEN=<INSERT YOUR APP TOKEN HERE>
+Environment=SLACK_KARMA_BOTUSER=<INSERT BOT NAME HERE>
+WorkingDirectory=/opt/slackbot/
+ExecStart=/usr/bin/python3 /opt/slackbot/main.py
 
-__Update 01.11.2018__: depending the type of commands you contribute, we merge it into master (= @karmabot revision used on our Slack). For more general purpose commands, not directly relevant to our @karmabot / Slack community, we made a [_utils_ branch](https://github.com/pybites/karmabot/tree/utils). We will merge those type of commands into that branch. 
+[Install]
+WantedBy=multi-user.target
+```
+```
+systemctl enable slackbot.service
+systemctl start slackbot.service
+```
+4. Make sure to check the code for the botname. I'm working on migrating that name into a config instead of being hardcoded.
+
+
+TODO:
+Create config loader.
+Inhance commands.
+Generate a working testing platform.
