@@ -3,6 +3,7 @@ import yaml
 
 TEMPLATE = '''\
 'BOTNAME': 'karmabot'
+'GENERAL_CHANNEL': '<SOMECHANNELID>'
 'ADMINS':
   - 'UEMN5QPLM'
 'ADMIN_COMMANDS':
