@@ -19,12 +19,12 @@ except yaml.scanner.ScannerError as e:
     logging.info('Config has invalid format')
     logging.debug(e)
     sys.exit(1)
-if config['BOTNAME']:
+if 'BOTNAME' in config:
     logging.info('Grabbing botname from config')
     botuser = config['BOTNAME']
 else:
     botuser = os.environ.get('SLACK_KARMA_BOTUSER')
-if config['SLACK_KARMA_TOKEN']:
+if 'SLACK_KARMA_TOKEN' in config:
     logging.info('grabbing slack token from config')
     token = config['SLACK_KARMA_TOKEN']
 else:
