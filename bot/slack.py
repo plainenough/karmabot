@@ -5,10 +5,7 @@ from slackclient import SlackClient
 from . import KARMA_BOT, SLACK_CLIENT, USERNAME_CACHE
 
 # bot commands
-from commands.add import add_command
-from commands.age import pybites_age
 from commands.ban import ban_user, unban_user, unban_all
-from commands.doc import doc_command
 from commands.help import create_commands_table
 from commands.score import get_karma, top_karma
 
@@ -26,13 +23,8 @@ ADMIN_BOT_COMMANDS = dict(top_karma=top_karma,
                           unban=unban_user,
                           unbanall=unban_all
                           )
-PUBLIC_BOT_COMMANDS = dict(age=pybites_age,
-                           add=add_command,
-                           help=create_commands_table
-                           )
 PRIVATE_BOT_COMMANDS = dict(
-                            doc=doc_command,
-                            help=create_commands_table,  # have everywhere
+                            help=create_commands_table,
                             karma=get_karma
                             )
 # END TODO
@@ -40,13 +32,11 @@ PRIVATE_BOT_COMMANDS = dict(
 def create_help_msg(is_admin):
     bot = "@lord_commander"
     help_msg = []
-    help_msg.append('\n1. Channel commands format: `{0} command`)'.format(bot))
-    help_msg.append(create_commands_table(PUBLIC_BOT_COMMANDS))
-    help_msg.append('\n2. Message commands (DM {0} typing `command`)'.format(
+    help_msg.append('\nMessage commands (DM {0} typing `command`)'.format(
         bot))
     help_msg.append(create_commands_table(PRIVATE_BOT_COMMANDS))
     if is_admin:
-        help_msg.append('\n3. Admin only commands')
+        help_msg.append('\nAdmin commands')
         help_msg.append(create_commands_table(ADMIN_BOT_COMMANDS))
     return '\n'.join(help_msg)
 
@@ -95,7 +85,7 @@ def perform_bot_cmd(msg, private=True):
     is_admin = userid and userid in ADMINS
     channel = msg.get('channel')
     text = msg.get('text')
-    command_set = private and PRIVATE_BOT_COMMANDS or PUBLIC_BOT_COMMANDS
+    command_set = private and PRIVATE_BOT_COMMANDS 
     cmd = text and _get_cmd(text, private=private)
     if not cmd:
         return None
