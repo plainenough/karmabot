@@ -48,6 +48,6 @@ systemctl start slackbot.service
 
 
 TODO:
-Create config loader.
-Inhance commands.
-Generate a working testing platform.
+*Create config loader. 
+*Enhance commands.
+*Generate a working testing platform.
