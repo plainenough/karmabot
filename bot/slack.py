@@ -2,42 +2,39 @@ from collections import namedtuple
 import logging
 import os
 from slackclient import SlackClient
-from . import KARMA_BOT, SLACK_CLIENT, USERNAME_CACHE
+from . import KARMA_BOT, SLACK_CLIENT, USERNAME_CACHE, CONFIG
 
 # bot commands
 from commands.ban import ban_user, unban_user, unban_all
 from commands.help import create_commands_table
 from commands.score import get_karma, top_karma
 
-# TODO: Migrate a good portion of this to a config file.
-# this information should be dynamically loaded if was to
-# become a portable solution. 
 Message = namedtuple('Message', 'giverid channel text')
-GENERAL_CHANNEL = 'CELQ0PWAC'  # Channel ID from our slack
-ADMINS = ('UEMN5QPLM')  # I'm the admin now.
-TEXT_FILTER_REPLIES = dict(cheers=':beers:',
-                           braces='`SyntaxError: not a chance`')
+GENERAL_CHANNEL = CONFIG['GENERAL_CHANNEL_ID']
+ADMINS = CONFIG['ADMINS']
+TEXT_FILTER_REPLIES = CONFIG['TEXT_FILTER_REPLIES']
+ADMIN_COMMANDS = {}
+USER_COMMANDS = {}
 
-ADMIN_BOT_COMMANDS = dict(top_karma=top_karma,
-                          ban=ban_user,
-                          unban=unban_user,
-                          unbanall=unban_all
-                          )
-PRIVATE_BOT_COMMANDS = dict(
-                            help=create_commands_table,
-                            karma=get_karma
-                            )
-# END TODO
+for key, value in CONFIG['ADMIN_COMMANDS'].items():
+    logging.debug("unpacking {0} admin command".format(key))
+    ADMIN_COMMANDS[key] = eval(value)
+for key, value in CONFIG['USER_COMMANDS'].items():
+    logging.debug("unpacking {0} user command".format(key))
+    USER_COMMANDS[key] = eval(value)
+logging.debug(ADMIN_COMMANDS)
+logging.debug(USER_COMMANDS)
+
 
 def create_help_msg(is_admin):
-    bot = "@lord_commander"
+    bot = KARMA_BOT
     help_msg = []
     help_msg.append('\nMessage commands (DM {0} typing `command`)'.format(
         bot))
-    help_msg.append(create_commands_table(PRIVATE_BOT_COMMANDS))
+    help_msg.append(create_commands_table(USER_COMMANDS))
     if is_admin:
         help_msg.append('\nAdmin commands')
-        help_msg.append(create_commands_table(ADMIN_BOT_COMMANDS))
+        help_msg.append(create_commands_table(ADMIN_COMMANDS))
     return '\n'.join(help_msg)
 
 
@@ -63,12 +60,11 @@ def post_msg(channel_or_user, text):
                           unfurl_media=False)
 
 
-
 def _get_cmd(text, private=True):
     if private:
         return text.split()[0].strip().lower()
     # TODO: Botname should be pulled from config
-    if not text.strip('<>@').startswith((KARMA_BOT, 'lord_commander')):
+    if not text.strip('<>@').startswith(KARMA_BOT):
         return None
     if text.strip().count(' ') < 1:
         return None
@@ -85,15 +81,15 @@ def perform_bot_cmd(msg, private=True):
     is_admin = userid and userid in ADMINS
     channel = msg.get('channel')
     text = msg.get('text')
-    command_set = private and PRIVATE_BOT_COMMANDS 
+    command_set = private and USER_COMMANDS
     cmd = text and _get_cmd(text, private=private)
     if not cmd:
         return None
     if cmd == 'help':
         return create_help_msg(is_admin)
     command = command_set.get(cmd)
-    if private and is_admin and cmd in ADMIN_BOT_COMMANDS:
-        command = ADMIN_BOT_COMMANDS.get(cmd)
+    if private and is_admin and cmd in ADMIN_COMMANDS:
+        command = ADMIN_COMMANDS.get(cmd)
     if not command:
         return None
     kwargs = dict(user=lookup_username(user),
@@ -128,7 +124,7 @@ def parse_next_msg():
     if type_event == 'channel_created':
         bot_joins_new_channel(msg)
         return None
-    # TODO: clean these values better OR discover why we get dicts and fix that. 
+    # TODO: investigate issue with getting random dictionaries.
     if (not isinstance(channel, str) or
        not isinstance(user, str) or
        not isinstance(text, str)):

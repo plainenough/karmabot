@@ -1,4 +1,5 @@
 BANNED
+config.yaml
 *pyc
 *swp
 venv
