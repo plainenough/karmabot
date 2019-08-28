@@ -13,8 +13,19 @@ Message = namedtuple('Message', 'giverid channel text')
 GENERAL_CHANNEL = CONFIG['GENERAL_CHANNEL_ID']
 ADMINS = CONFIG['ADMINS']
 TEXT_FILTER_REPLIES = CONFIG['TEXT_FILTER_REPLIES']
-ADMIN_COMMANDS = dict(CONFIG['ADMIN_COMMANDS'])
-USER_COMMANDS = dict(CONFIG['USER_COMMANDS'])
+ADMIN_COMMANDS = {}
+USER_COMMANDS = {}
+
+for key, value in CONFIG['ADMIN_COMMANDS'].items():
+    logging.debug("unpacking {0} admin command".format(key))
+    ADMIN_COMMANDS[key] = eval(value)
+
+for key, value in CONFIG['USER_COMMANDS'].items():
+    logging.debug("unpacking {0} user command".format(key))
+    USER_COMMANDS[key] = eval(value)
+
+logging.debug(ADMIN_COMMANDS)
+logging.debug(USER_COMMANDS)
 
 def create_help_msg(is_admin):
     bot = KARMA_BOT
