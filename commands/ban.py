@@ -11,7 +11,7 @@ def ban_user(**kwargs: dict) -> str:
     with open('BANNED', 'a') as banned_list:
         for new_user in banned_users:
             banned_list.write('{0}\n'.format(new_user))
-    msg_text = '' 
+    msg_text = ''
     for user in banned_users:
         msg_text += 'User {0} is banned.\n'.format(user)
     return msg_text

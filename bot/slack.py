@@ -19,13 +19,12 @@ USER_COMMANDS = {}
 for key, value in CONFIG['ADMIN_COMMANDS'].items():
     logging.debug("unpacking {0} admin command".format(key))
     ADMIN_COMMANDS[key] = eval(value)
-
 for key, value in CONFIG['USER_COMMANDS'].items():
     logging.debug("unpacking {0} user command".format(key))
     USER_COMMANDS[key] = eval(value)
-
 logging.debug(ADMIN_COMMANDS)
 logging.debug(USER_COMMANDS)
+
 
 def create_help_msg(is_admin):
     bot = KARMA_BOT
@@ -61,7 +60,6 @@ def post_msg(channel_or_user, text):
                           unfurl_media=False)
 
 
-
 def _get_cmd(text, private=True):
     if private:
         return text.split()[0].strip().lower()
@@ -83,7 +81,7 @@ def perform_bot_cmd(msg, private=True):
     is_admin = userid and userid in ADMINS
     channel = msg.get('channel')
     text = msg.get('text')
-    command_set = private and USER_COMMANDS 
+    command_set = private and USER_COMMANDS
     cmd = text and _get_cmd(text, private=private)
     if not cmd:
         return None
@@ -126,7 +124,7 @@ def parse_next_msg():
     if type_event == 'channel_created':
         bot_joins_new_channel(msg)
         return None
-    # TODO: clean these values better OR discover why we get dicts and fix that. 
+    # TODO: investigate issue with getting random dictionaries.
     if (not isinstance(channel, str) or
        not isinstance(user, str) or
        not isinstance(text, str)):
