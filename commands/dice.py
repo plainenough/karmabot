@@ -1,6 +1,6 @@
 def roll(**kwargs: dict) -> str:
-    import random
     """rolls a dice: roll d20 Optional value: confirm"""
+    import random
     user = kwargs.get('user')
     channel = kwargs.get('channel')
     msg_text = kwargs.get('text')
