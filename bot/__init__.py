@@ -6,6 +6,11 @@ import re
 import sys
 import yaml
 from slackclient import SlackClient
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(name)-12s %(levelname)-8s' +
+                    ' %(message)s',
+                    datefmt='%m-%d %H:%M',
+                    filename='.bot.log')
 try:
     with open('config.yaml', 'r') as _config:
         config = yaml.load(_config.read())
@@ -43,11 +48,6 @@ IS_USER = re.compile(r'^<@[^>]+>$')
 USERNAME_CACHE = {}
 KARMA_CACHE = 'data'
 CONFIG = config
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s %(name)-12s %(levelname)-8s' +
-                    ' %(message)s',
-                    datefmt='%m-%d %H:%M',
-                    filename='.bot.log')
 logging.info('Script started')
 try:
     logging.info('Retrieving karma cache file')
