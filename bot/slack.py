@@ -8,6 +8,7 @@ from . import KARMA_BOT, SLACK_CLIENT, USERNAME_CACHE, CONFIG
 from commands.ban import ban_user, unban_user, unban_all
 from commands.help import create_commands_table
 from commands.score import get_karma, top_karma
+from commands.dice import roll
 
 Message = namedtuple('Message', 'giverid channel text')
 GENERAL_CHANNEL = CONFIG['GENERAL_CHANNEL_ID']
