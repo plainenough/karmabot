@@ -23,7 +23,6 @@ pipeline {
     stage('Build') {
       steps {
         sh 'echo "Begin build"'
-        sh "echo \"${version}\" > ./slaveversion"
         script {
             buildName = String.format("derrickwalton/karmabot:%s", version)
             linuxBuild = docker.build(buildName, "-f ./container/Dockerfile --no-cache .")
