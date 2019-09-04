@@ -8,7 +8,7 @@ def ban_user(**kwargs: dict) -> str:
     banned_users = _payload.translate({ord(i): None for i in '<>@'}).split()
     # removing the word ban from the baned user command.
     banned_users.remove('ban')
-    with open('BANNED', 'a') as banned_list:
+    with open('data/BANNED', 'a') as banned_list:
         for new_user in banned_users:
             banned_list.write('{0}\n'.format(new_user))
     msg_text = ''
@@ -21,7 +21,7 @@ def unban_all(**kwargs: dict) -> str:
     """unban_all will lift existing bans for all users"""
     user = kwargs.get('user')
     channel = kwargs.get('channel')
-    with open('BANNED', 'w') as banned_list:
+    with open('data/BANNED', 'w') as banned_list:
         banned_list.write('')
     msg_text = 'Cleared the ban list'
     return msg_text
@@ -34,9 +34,9 @@ def unban_user(**kwargs: dict) -> str:
     _payload = kwargs.get('text').strip()
     unbanned_users = _payload.translate({ord(i): None for i in '<>@'}).split()
     unbanned_users.remove('unban')
-    with open('BANNED', 'r') as banned_list:
+    with open('data/BANNED', 'r') as banned_list:
         temp_list = banned_list.readlines()
-    with open('BANNED', 'w') as banned_list:
+    with open('data/BANNED', 'w') as banned_list:
         for line in temp_list:
             for user in unbanned_users:
                 if line.strip('\n') != user:

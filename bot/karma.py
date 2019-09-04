@@ -18,9 +18,12 @@ def process_karma_changes(message, karma_changes):
         banned_list = []
         giver = lookup_username(message.giverid)
         channel = message.channel
-        with open('BANNED', 'r') as banned_file:
-            for line in banned_file.readlines():
-                banned_list.append(line.strip('\n'))
+        try:
+            with open('data/BANNED', 'r') as banned_file:
+                for line in banned_file.readlines():
+                    banned_list.append(line.strip('\n'))
+        except:
+            print('No banned list')
         if message.giverid in banned_list:
             msg = '@{0} you are banned, please talk to an admin'.format(giver)
             post_msg(channel, msg)
