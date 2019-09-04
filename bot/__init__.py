@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(name)-12s %(levelname)-8s' +
                     ' %(message)s',
                     datefmt='%m-%d %H:%M',
-                    filename='.bot.log')
+                    filename='data/slackbot.log')
 try:
     with open('data/config.yaml', 'r') as _config:
         config = yaml.load(_config.read())

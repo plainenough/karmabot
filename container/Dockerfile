@@ -12,7 +12,7 @@ urllib3==1.25.3 \
 websocket-client==0.44.0
 WORKDIR /opt/slackbot/
 COPY . /opt/slackbot
-CMD python3 main.py
+CMD python3 main.py && tail -f /opt/slackbot/data/slackbot.log
 LABEL     org.label-schema.name="Karmabot" \
           org.label-schema.description="Hipchat like Karma bot for slack." \
           org.label-schema.url="https://github.com/plainenough/karmabot.git" \
