@@ -13,3 +13,8 @@ websocket-client==0.44.0
 WORKDIR /opt/slackbot/
 COPY . /opt/slackbot
 CMD python3 main.py
+LABEL     org.label-schema.name="Karmabot" \
+          org.label-schema.description="Hipchat like Karma bot for slack." \
+          org.label-schema.url="https://github.com/plainenough/karmabot.git" \
+          org.label-schema.vendor="Tosstalk.com" \
+          org.label-schema.version=$version
