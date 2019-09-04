@@ -26,7 +26,7 @@ pipeline {
         sh "echo \"${version}\" > ./slaveversion"
         script {
             buildName = String.format("derrickwalton/karmabot:%s", version)
-            linuxSlave = docker.build(buildName, "-f ./container/Dockerfile.Slave --no-cache .")
+            linuxSlave = docker.build(buildName, "-f ./container/Dockerfile --no-cache .")
         }
       }
     }
@@ -44,7 +44,6 @@ pipeline {
       lastChanges since: 'LAST_SUCCESSFUL_BUILD', format:'SIDE',matching: 'LINE'
       script {
         docker.withRegistry( '', registryCredential ) {
-          jenkinsMaster.push()
           linuxBuild.push()
           linuxBuild.push('latest')
         }
