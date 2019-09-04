@@ -26,7 +26,7 @@ pipeline {
         sh "echo \"${version}\" > ./slaveversion"
         script {
             buildName = String.format("derrickwalton/karmabot:%s", version)
-            linuxSlave = docker.build(buildName, "-f ./container/Dockerfile --no-cache .")
+            linuxBuild = docker.build(buildName, "-f ./container/Dockerfile --no-cache .")
         }
       }
     }
