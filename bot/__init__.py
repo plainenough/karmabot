@@ -6,13 +6,13 @@ import re
 import sys
 import yaml
 from slackclient import SlackClient
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(name)-12s %(levelname)-8s' +
                     ' %(message)s',
                     datefmt='%m-%d %H:%M',
                     filename='.bot.log')
 try:
-    with open('config.yaml', 'r') as _config:
+    with open('data/config.yaml', 'r') as _config:
         config = yaml.load(_config.read())
         logging.info('Valid config found')
 except FileNotFoundError:
@@ -46,7 +46,7 @@ MAX_POINTS = 5
 KARMA_ACTION = re.compile(r'(?:^| )(\S{2,}?)\s?[\+\-]([\+\-]+)')
 IS_USER = re.compile(r'^<@[^>]+>$')
 USERNAME_CACHE = {}
-KARMA_CACHE = 'data'
+KARMA_CACHE = 'data/score'
 CONFIG = config
 logging.info('Script started')
 try:
