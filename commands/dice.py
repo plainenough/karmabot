@@ -20,10 +20,10 @@ def roll(**kwargs: dict) -> str:
         if 'd' not in com:
             continue
         upper = int(com.split('d')[1])
-        msg += "\nYour {0} roll is {1}".format(com, random.randrange(1, upper))
+        msg += "\nYour {0} roll is {1}".format(com, random.randrange(1, upper+1))
         if confirm:
             msg += " with a confirmation of {0}".format(
-                    random.randrange(1, upper))
+                    random.randrange(1, upper+1))
     return msg
 
 
