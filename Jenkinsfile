@@ -12,12 +12,19 @@ pipeline {
       steps {
         sh 'echo "Begin setup"'
         notifyBuild('STARTED')
+        sh "export PYTHONPATH=$PWD"
         git 'https://github.com/plainenough/karmabot'
         withCredentials([
           file(credentialsId: 'k8sconfig', variable: 'kubeconfig')
         ]) {
-          sh 'cp $kubeconfig ./kubeconfig'
+          sh 'cp $kubeconfig ../kubeconfig'
         }
+      }
+    }
+    stage('testing') {
+      steps {
+        sh "kubectl  --kubeconfig ./kubeconfig --insecure-skip-tls-verify get pods"
+        sh "pytest -v"
       }
     }
     stage('Build') {
@@ -28,11 +35,6 @@ pipeline {
             linuxBuild = docker.build(buildName, "-f ./container/Dockerfile --no-cache .")
         }
       }
-    }
-    stage('testing') {
-        steps {
-            sh "kubectl  --kubeconfig ./kubeconfig --insecure-skip-tls-verify get pods"
-        }
     }
   }
   post {
@@ -47,7 +49,7 @@ pipeline {
           linuxBuild.push('latest')
         }
       }
-      sh "kubectl --kubeconfig ./kubeconfig --insecure-skip-tls-verify set image deployment/karmabot -n karmabot karmabot=derrickwalton/karmabot:\"${version}\""
+      sh "kubectl --kubeconfig ../kubeconfig --insecure-skip-tls-verify set image deployment/karmabot -n karmabot karmabot=derrickwalton/karmabot:\"${version}\""
       sh 'sleep 30'
       notifyBuild(currentBuild.result)
     }
