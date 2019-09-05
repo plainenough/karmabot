@@ -12,7 +12,6 @@ pipeline {
       steps {
         sh 'echo "Begin setup"'
         notifyBuild('STARTED')
-        sh "export PYTHONPATH=$PWD"
         git 'https://github.com/plainenough/karmabot'
         withCredentials([
           file(credentialsId: 'k8sconfig', variable: 'kubeconfig')
