@@ -20,6 +20,7 @@ def fixture_ban():
     unbanall = ban.unban_all(**kwargs)
     return banned, unbanned, unbanall
 
+
 def test_unban(fixture_ban):
     banned, unbanned, unbanall = fixture_ban
     assert unbanned == 'User bob is unbanned.\n'
@@ -28,8 +29,8 @@ def test_unban(fixture_ban):
 def test_unbanall(fixture_ban):
     banned, unbanned, unbanall = fixture_ban
     assert unbanall == 'Cleared the ban list'
-    
-    
+   
+   
 def test_ban(fixture_ban):
     banned, unbanned, unbanall = fixture_ban
     assert banned == 'User bob is banned.\n'
