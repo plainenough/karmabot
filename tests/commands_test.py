@@ -36,4 +36,4 @@ def test_ban(fixture_ban):
 
 
 if __name__ == '__main__':
-    print(fixture_ban())
+    print("run pytest")
