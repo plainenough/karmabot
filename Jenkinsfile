@@ -23,7 +23,7 @@ pipeline {
     }
     stage('testing') {
       steps {
-        sh "kubectl  --kubeconfig ./kubeconfig --insecure-skip-tls-verify get pods"
+        sh "kubectl  --kubeconfig ../kubeconfig --insecure-skip-tls-verify get pods"
         sh "pytest -v"
       }
     }
