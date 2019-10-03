@@ -23,7 +23,7 @@ pipeline {
     stage('testing') {
       steps {
         sh "kubectl  --kubeconfig ../kubeconfig --insecure-skip-tls-verify get pods"
-        sh "pytest -v"
+        sh "pytest -v --junit-xml=results.xml"
       }
     }
     stage('Build') {
@@ -37,6 +37,9 @@ pipeline {
     }
   }
   post {
+    always {
+      junit testResults: 'results.xml', healthScaleFactor: 100
+    }
     failure {
       notifyBuild(currentBuild.result)
     }
