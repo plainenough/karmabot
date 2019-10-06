@@ -6,6 +6,7 @@ pipeline {
     registryCredential = 'dockerhub'
     version = "1.1.0-$BUILD_NUMBER"
     linuxBuild = ''
+    PYTHONPATH = "${WORKSPACE}"
   }
   stages {
     stage('Setup'){
