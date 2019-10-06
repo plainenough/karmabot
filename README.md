@@ -1,6 +1,9 @@
+# NOTICE: I have sunsetted this fork in favor of https://github.com/plainenough/slackbot
+
+
 # Rebuilding a Karma Bot with Python and the Slack API:
 
-![Load Commander](https://upload.wikimedia.org/wikipedia/en/f/f4/PinkyandtheBrain.TheBrain.png)
+![Lord Commander](https://upload.wikimedia.org/wikipedia/en/f/f4/PinkyandtheBrain.TheBrain.png)
 
 [![BCH compliance](https://bettercodehub.com/edge/badge/plainenough/karmabot?branch=master)](https://bettercodehub.com/)
 
@@ -73,7 +76,3 @@ docker run -v /PATH/TO/DATA:/opt/slackbot/data --name karmabot karmabot
 from commands.newmodule import your_function
 ```
 3. Add your command to the config and restart your service.
-
-
-## TODO:
-* Generate a working testing platform.
